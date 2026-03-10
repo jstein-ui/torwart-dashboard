@@ -146,15 +146,9 @@ def make_whatsapp_url(bestellungen: list, rg_name: str, rg_strasse: str,
 @st.cache_resource
 def get_worksheet():
     import json, os
-    if "CREDENTIALS_JSON" in st.secrets:
-        # Streamlit Cloud — JSON-String aus Secret lesen
-        # Zeilenumbrüche im private_key reparieren
-        raw = st.secrets["CREDENTIALS_JSON"]
-        raw = raw.replace("\r\n", "\n").replace("\r", "\n")
-        info = json.loads(raw)
-        # private_key: \n als echte Zeilenumbrüche sicherstellen
-        if "private_key" in info:
-            info["private_key"] = info["private_key"].replace("\\n", "\n")
+    if "gcp_service_account" in st.secrets:
+        # Streamlit Cloud — einzelne TOML-Felder direkt als Dict übergeben
+        info = {k: v for k, v in st.secrets["gcp_service_account"].items()}
         creds = Credentials.from_service_account_info(info, scopes=SCOPES)
     elif os.path.exists(CREDENTIALS_FILE):
         # Lokaler PC — Datei lesen
