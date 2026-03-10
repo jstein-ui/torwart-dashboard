@@ -112,17 +112,17 @@ def clean_pct(series):
 # ═══════════════════════════════════════════════════════════════
 # WHATSAPP
 # ═══════════════════════════════════════════════════════════════
-CHRISTOPHER_NR = "4917657803132"   # +49 176 57803132 ohne + und Leerzeichen
-LIEFERADRESSE  = "Jens Stein\nLa-Roche-str. 53\n44629 Herne"
+CHRISTOPHER_NR = ""   # Nummer von Christopher hier eintragen z.B. "4917612345678"
+LIEFERADRESSE  = ""   # Deine Lieferadresse hier eintragen
 
 def make_whatsapp_url(bestellungen: list, rg_name: str, rg_strasse: str,
                        rg_plzort: str, rg_email: str = "") -> str:
     """
-    Erstellt einen wa.me-Link mit vorausgefüllter Nachricht an Christopher.
+    Erstellt einen wa.me-Link mit vorausgefüllter Nachricht an den Lieferanten.
     bestellungen = [{"artikel": ..., "groesse": ...}, ...]
     """
     import urllib.parse
-    zeilen = ["Moin Christopher, ich hätte wieder eine kleine Bestellung."]
+    zeilen = ["Moin, ich hätte wieder eine kleine Bestellung."]
     for b in bestellungen:
         gr = fmt_groesse(float(b["groesse"]))
         zeilen.append(f"{b['artikel']} GR. {gr}")
@@ -807,7 +807,7 @@ elif seite == "📅 Zeitstrahl":
 # ═══════════════════════════════════════════════════════════════
 elif seite == "➕ Neue Bestellung":
     st.title("➕ Neue Bestellung eingeben")
-    st.caption("Daten werden direkt in Google Sheets gespeichert und als WhatsApp an Christopher geschickt.")
+    st.caption("Daten werden direkt in Google Sheets gespeichert.")
 
     # Session State für WhatsApp-Link nach dem Speichern
     if "wa_url"         not in st.session_state: st.session_state.wa_url         = None
@@ -893,7 +893,7 @@ elif seite == "➕ Neue Bestellung":
     # ── RECHNUNGSADRESSE & ABSENDEN ──────────────────────────────────────────
     if st.session_state.positionen:
         st.divider()
-        st.subheader("📬 Rechnungsadresse (für WhatsApp an Christopher)")
+        st.subheader("📬 Rechnungsadresse (für WhatsApp an Lieferanten)")
         with st.form("rg_form"):
             rg_c1, rg_c2 = st.columns(2)
             rg_name   = rg_c1.text_input("Verein / Name", placeholder="z.B. SV Lembeck")
@@ -937,8 +937,8 @@ elif seite == "➕ Neue Bestellung":
     # ── WHATSAPP BUTTON ───────────────────────────────────────────────────────
     if st.session_state.wa_url:
         st.divider()
-        st.subheader("💬 WhatsApp an Christopher senden")
-        st.caption("Catch & Keep GmbH · Christopher · +49 176 57803132")
+        st.subheader("💬 WhatsApp an Lieferanten senden")
+        st.caption("WhatsApp an deinen Lieferanten")
 
         # Vorschau der Nachricht
         positionen_preview = "\n".join([
@@ -947,10 +947,10 @@ elif seite == "➕ Neue Bestellung":
         ])
         st.info(
             f"**Nachricht wird vorausgefüllt:**\n\n"
-            f"Moin Christopher, ich hätte wieder eine kleine Bestellung.\n"
+            f"Moin, ich hätte wieder eine kleine Bestellung.\n"
             f"{positionen_preview}\n\n"
             f"Rechnungsadresse: {st.session_state.wa_rg_name}\n"
-            f"Lieferadresse: Jens Stein, La-Roche-str. 53, 44629 Herne"
+            f"Lieferadresse: {LIEFERADRESSE.replace(chr(10), ", ")}"
         )
 
         st.link_button(
