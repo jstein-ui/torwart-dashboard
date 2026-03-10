@@ -343,7 +343,7 @@ LAYOUT = dict(
 # ═══════════════════════════════════════════════════════════════
 with st.sidebar:
     st.markdown("## 🧤 Navigation")
-    seite = st.radio("", [
+    seite = st.radio("Seitenwahl", [
         "📊 Zentrale Übersicht",
         "📋 Operative Abrechnung",
         "💰 Finanzanalyse",
