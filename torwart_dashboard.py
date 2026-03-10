@@ -147,14 +147,20 @@ def make_whatsapp_url(bestellungen: list, rg_name: str, rg_strasse: str,
 def get_worksheet():
     # Streamlit Cloud: credentials aus st.secrets lesen
     # Lokal: credentials.json Datei lesen
-    try:
-        creds = Credentials.from_service_account_info(
-            dict(st.secrets["gcp_service_account"]),
-            scopes=SCOPES
-        )
-    except (KeyError, Exception):
-        # Fallback: lokale credentials.json (für PC-Betrieb)
+    import os
+    if "gcp_service_account" in st.secrets:
+        # Streamlit Cloud — Secret als Dict direkt übergeben
+        info = {k: v for k, v in st.secrets["gcp_service_account"].items()}
+        creds = Credentials.from_service_account_info(info, scopes=SCOPES)
+    elif os.path.exists(CREDENTIALS_FILE):
+        # Lokaler PC — Datei lesen
         creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=SCOPES)
+    else:
+        raise FileNotFoundError(
+            "Keine Credentials gefunden. Bitte entweder:\n"
+            "1. credentials.json im App-Ordner ablegen (lokal), oder\n"
+            "2. Streamlit Secrets unter [gcp_service_account] konfigurieren (Cloud)."
+        )
     client = gspread.authorize(creds)
     return client.open(SHEET_NAME).worksheet(WORKSHEET_NAME)
 
