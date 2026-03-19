@@ -589,7 +589,7 @@ elif seite == "💰 Finanzanalyse":
         st.divider()
 
         gesamt_rab_verein_sim = vereinszuschuss * anzahl_zeilen
-        steps = ["Brutto", "− Rabatt\n(30%)", "Netto",
+        steps = ["Brutto", "− Rabatt\n", "Netto",
                  f"− Vereins-\nzuschuss\n({vereinszuschuss} €/P.)", "Verbleibend"]
         werte = [gesamt_brutto, -ersparnis, gesamt_netto,
                  -gesamt_rab_verein_sim, sim_verbleibend]
