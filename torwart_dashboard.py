@@ -30,7 +30,7 @@ import os
 # ═══════════════════════════════════════════════════════════════
 SHEET_NAME       = "Torwarthandschuhe"
 CREDENTIALS_FILE = "credentials.json"
-WORKSHEET_NAME   = "Torwarthandschuhe"
+WORKSHEET_NAME   = "Demo_Data"
 
 COL_PERSON     = "Empfänger / Person"
 COL_ARTIKEL    = "Artikelbezeichnung"
